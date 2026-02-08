@@ -1,0 +1,273 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Personal Finance Management - Sophisticated Fintech Design System */
+
+@layer base {
+  :root {
+    /* Base colors - Clean, professional light theme */
+    --background: 210 20% 98%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    /* Primary - Deep navy blue for trust and professionalism */
+    --primary: 222 47% 20%;
+    --primary-foreground: 210 40% 98%;
+
+    /* Secondary - Soft gray for subtle UI elements */
+    --secondary: 214 20% 94%;
+    --secondary-foreground: 222 47% 20%;
+
+    --muted: 214 20% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 214 20% 92%;
+    --accent-foreground: 222 47% 20%;
+
+    /* Semantic colors for finance */
+    --income: 152 60% 40%;
+    --income-foreground: 0 0% 100%;
+    --income-muted: 152 45% 92%;
+
+    --expense: 4 80% 60%;
+    --expense-foreground: 0 0% 100%;
+    --expense-muted: 4 60% 94%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    --warning-muted: 38 60% 94%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214 20% 90%;
+    --input: 214 20% 90%;
+    --ring: 222 47% 20%;
+
+    --radius: 0.75rem;
+
+    /* Chart colors */
+    --chart-1: 222 47% 20%;
+    --chart-2: 152 60% 40%;
+    --chart-3: 4 80% 60%;
+    --chart-4: 38 92% 50%;
+    --chart-5: 280 60% 50%;
+
+    /* Sidebar */
+    --sidebar-background: 222 47% 11%;
+    --sidebar-foreground: 210 20% 90%;
+    --sidebar-primary: 152 60% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 222 40% 18%;
+    --sidebar-accent-foreground: 210 20% 90%;
+    --sidebar-border: 222 30% 20%;
+    --sidebar-ring: 152 60% 50%;
+
+    /* Gradients */
+    --gradient-income: linear-gradient(
+      135deg,
+      hsl(152 60% 40%) 0%,
+      hsl(152 50% 50%) 100%
+    );
+    --gradient-expense: linear-gradient(
+      135deg,
+      hsl(4 80% 60%) 0%,
+      hsl(4 70% 50%) 100%
+    );
+    --gradient-primary: linear-gradient(
+      135deg,
+      hsl(222 47% 20%) 0%,
+      hsl(222 47% 30%) 100%
+    );
+    --gradient-hero: linear-gradient(
+      135deg,
+      hsl(222 47% 11%) 0%,
+      hsl(222 40% 18%) 100%
+    );
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(222 47% 11% / 0.05);
+    --shadow-md:
+      0 4px 6px -1px hsl(222 47% 11% / 0.08),
+      0 2px 4px -1px hsl(222 47% 11% / 0.04);
+    --shadow-lg:
+      0 10px 15px -3px hsl(222 47% 11% / 0.08),
+      0 4px 6px -2px hsl(222 47% 11% / 0.04);
+    --shadow-card:
+      0 0 0 1px hsl(214 20% 90%), 0 4px 12px -2px hsl(222 47% 11% / 0.08);
+    --shadow-card-hover:
+      0 0 0 1px hsl(214 20% 85%), 0 8px 20px -4px hsl(222 47% 11% / 0.12);
+  }
+
+  .dark {
+    --background: 222 47% 6%;
+    --foreground: 210 20% 95%;
+
+    --card: 222 40% 10%;
+    --card-foreground: 210 20% 95%;
+
+    --popover: 222 40% 10%;
+    --popover-foreground: 210 20% 95%;
+
+    --primary: 152 60% 50%;
+    --primary-foreground: 222 47% 11%;
+
+    --secondary: 222 30% 18%;
+    --secondary-foreground: 210 20% 90%;
+
+    --muted: 222 30% 15%;
+    --muted-foreground: 215 16% 60%;
+
+    --accent: 222 30% 18%;
+    --accent-foreground: 210 20% 95%;
+
+    --income: 152 60% 50%;
+    --income-foreground: 222 47% 11%;
+    --income-muted: 152 40% 15%;
+
+    --expense: 4 80% 60%;
+    --expense-foreground: 0 0% 100%;
+    --expense-muted: 4 50% 15%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 222 47% 11%;
+    --warning-muted: 38 50% 15%;
+
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 222 30% 18%;
+    --input: 222 30% 18%;
+    --ring: 152 60% 50%;
+
+    --sidebar-background: 222 47% 8%;
+    --sidebar-foreground: 210 20% 90%;
+    --sidebar-primary: 152 60% 50%;
+    --sidebar-primary-foreground: 222 47% 11%;
+    --sidebar-accent: 222 40% 14%;
+    --sidebar-accent-foreground: 210 20% 90%;
+    --sidebar-border: 222 30% 15%;
+    --sidebar-ring: 152 60% 50%;
+
+    --shadow-card:
+      0 0 0 1px hsl(222 30% 18%), 0 4px 12px -2px hsl(0 0% 0% / 0.3);
+    --shadow-card-hover:
+      0 0 0 1px hsl(222 30% 22%), 0 8px 20px -4px hsl(0 0% 0% / 0.4);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
+  }
+}
+
+@layer components {
+  /* Finance-specific utility classes */
+  .stat-card {
+    @apply bg-card rounded-xl p-4 sm:p-6 transition-all duration-300;
+    box-shadow: var(--shadow-card);
+  }
+
+  .stat-card:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-2px);
+  }
+
+  /* Remove hover transform on touch devices */
+  @media (hover: none) {
+    .stat-card:hover {
+      transform: none;
+    }
+  }
+
+  .income-badge {
+    @apply bg-income-muted text-income rounded-full px-3 py-1 text-sm font-medium;
+  }
+
+  .expense-badge {
+    @apply bg-expense-muted text-expense rounded-full px-3 py-1 text-sm font-medium;
+  }
+
+  .progress-bar {
+    @apply h-2 rounded-full bg-secondary overflow-hidden;
+  }
+
+  .progress-bar-fill {
+    @apply h-full rounded-full transition-all duration-500 ease-out;
+  }
+
+  /* Animated number transitions */
+  .stat-number {
+    @apply text-3xl font-bold tracking-tight tabular-nums;
+  }
+
+  /* Glass effect for overlays */
+  .glass {
+    @apply bg-background/80 backdrop-blur-xl;
+  }
+}
+
+@layer utilities {
+  /* Custom scrollbar */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted)) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.3);
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.5);
+  }
+
+  /* Income/Expense text colors */
+  .text-income {
+    color: hsl(var(--income));
+  }
+
+  .text-expense {
+    color: hsl(var(--expense));
+  }
+
+  .bg-income {
+    background-color: hsl(var(--income));
+  }
+
+  .bg-expense {
+    background-color: hsl(var(--expense));
+  }
+
+  .bg-income-muted {
+    background-color: hsl(var(--income-muted));
+  }
+
+  .bg-expense-muted {
+    background-color: hsl(var(--expense-muted));
+  }
+}
