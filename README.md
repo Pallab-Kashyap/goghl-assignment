@@ -12,7 +12,7 @@ Built with a modern stack using **NestJS + Prisma + PostgreSQL + React (Vite)**.
   https://moneywise.kshyp.tech
 
 - **API Documentation (Swagger)**
-  httpsmoneywise.kshyp.tech/api/doc
+  https://moneywise.kshyp.tech/api/doc
 
 ---
 
