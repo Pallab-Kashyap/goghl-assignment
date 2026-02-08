@@ -67,11 +67,11 @@ export default function RegisterPage() {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4">
             <img
               src="/money-wise.png"
-              alt="FinanceFlow"
+              alt="MoneyWise"
               className="w-16 h-16"
             />
           </div>
-          <h1 className="text-3xl font-bold tracking-tight">FinanceFlow</h1>
+          <h1 className="text-3xl font-bold tracking-tight">MoneyWise</h1>
           <p className="text-muted-foreground mt-2">
             Your personal finance companion
           </p>

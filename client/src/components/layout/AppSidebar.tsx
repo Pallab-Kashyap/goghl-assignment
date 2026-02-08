@@ -51,8 +51,8 @@ export function MobileHeader({ onMenuClick }: MobileHeaderProps) {
           <Menu className="w-5 h-5" />
         </Button>
         <div className="flex items-center gap-2">
-          <img src="/money-wise.png" className="w-8 h-8" alt="FinanceFlow" />
-          <span className="font-semibold text-lg">FinanceFlow</span>
+          <img src="/money-wise.png" className="w-8 h-8" alt="MoneyWise" />
+          <span className="font-semibold text-lg">MoneyWise</span>
         </div>
       </div>
     </header>
@@ -93,11 +93,11 @@ export function AppSidebar({
           onClick={() => navigate("/dashboard")}
         >
           <div className="flex items-center justify-center w-10 h-10 rounded-xl text-sidebar-primary-foreground shrink-0">
-            <img src="/money-wise.png" alt="FinanceFlow" />
+            <img src="/money-wise.png" alt="MoneyWise" />
           </div>
           {!collapsed && (
             <span className="font-semibold text-lg text-sidebar-foreground">
-              FinanceFlow
+              MoneyWise
             </span>
           )}
         </div>
@@ -239,9 +239,9 @@ export function AppSidebar({
               <img
                 src="/money-wise.png"
                 className="w-10 h-10"
-                alt="FinanceFlow"
+                alt="MoneyWise"
               />
-              <span>FinanceFlow</span>
+              <span>MoneyWise</span>
             </SheetTitle>
           </SheetHeader>
           <div className="flex-1 flex flex-col overflow-hidden">
