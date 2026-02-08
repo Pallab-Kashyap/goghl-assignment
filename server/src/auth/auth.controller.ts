@@ -6,7 +6,6 @@ import {
   Res,
   Req,
   UseGuards,
-  Query,
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
@@ -170,11 +169,17 @@ export class AuthController {
   }
 
   @Get('google')
-  @ApiOperation({ summary: 'Initiate Google OAuth login' })
+  @ApiOperation({ summary: 'Initiate Google OAuth login via better-auth' })
   @ApiResponse({ status: 302, description: 'Redirects to Google OAuth' })
   googleAuth(@Res() res: Response) {
-    const url = this.authService.getGoogleAuthUrl();
-    res.redirect(url);
+    // Redirect to better-auth's sign-in endpoint for Google
+    const baseUrl = process.env.BETTER_AUTH_URL || 'http://localhost:3000';
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3001';
+    const callbackURL = `${frontendUrl}/auth/callback`;
+
+    // Construct the sign-in URL for Google OAuth
+    const signInUrl = `${baseUrl}/api/auth/sign-in/social?provider=google&callbackURL=${encodeURIComponent(callbackURL)}`;
+    res.redirect(signInUrl);
   }
 
   @Get('google/status')
@@ -186,18 +191,17 @@ export class AuthController {
   googleAuthStatus() {
     const clientId = process.env.GOOGLE_CLIENT_ID;
     const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
-    const callbackUrl = process.env.GOOGLE_CALLBACK_URL;
+    const betterAuthUrl = process.env.BETTER_AUTH_URL;
     const frontendUrl = process.env.FRONTEND_URL;
 
     return {
       configured: !!(clientId && clientSecret),
       clientIdSet: !!clientId,
       clientSecretSet: !!clientSecret,
-      callbackUrl:
-        callbackUrl ||
-        'http://localhost:3000/api/auth/google/callback (default)',
+      callbackUrl: `${betterAuthUrl || 'http://localhost:3000'}/api/auth/callback/google`,
       frontendUrl: frontendUrl || 'http://localhost:3001 (default)',
       nodeEnv: process.env.NODE_ENV || 'development',
+      usingBetterAuth: true,
     };
   }
 
@@ -222,61 +226,6 @@ export class AuthController {
     });
 
     return result;
-  }
-
-  @Get('google/callback')
-  @ApiOperation({ summary: 'Google OAuth callback handler' })
-  @ApiResponse({
-    status: 302,
-    description: 'Redirects to frontend with tokens in cookies',
-  })
-  async googleCallback(
-    @Query('code') code: string,
-    @Query('error') error: string,
-    @Res({ passthrough: true }) res: Response,
-  ) {
-    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3001';
-
-    // Handle OAuth errors (user denied access, etc.)
-    if (error) {
-      console.error('Google OAuth error:', error);
-      res.redirect(
-        `${frontendUrl}/auth/callback?error=${encodeURIComponent(error)}`,
-      );
-      return;
-    }
-
-    if (!code) {
-      console.error('Google OAuth: No code received');
-      res.redirect(
-        `${frontendUrl}/auth/callback?error=${encodeURIComponent('No authorization code received')}`,
-      );
-      return;
-    }
-
-    try {
-      const result = await this.authService.handleGoogleCallback(code);
-
-      // Set cookies
-      res.cookie('accessToken', result.tokens.accessToken, {
-        ...authConfig.cookieOptions,
-        maxAge: 15 * 60 * 1000,
-      });
-      res.cookie('refreshToken', result.tokens.refreshToken, {
-        ...authConfig.cookieOptions,
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-      });
-
-      // Redirect to frontend auth callback with success flag
-      res.redirect(`${frontendUrl}/auth/callback?success=true`);
-    } catch (err) {
-      console.error('Google OAuth callback error:', err);
-      const errorMessage =
-        err instanceof Error ? err.message : 'Authentication failed';
-      res.redirect(
-        `${frontendUrl}/auth/callback?error=${encodeURIComponent(errorMessage)}`,
-      );
-    }
   }
 }
 

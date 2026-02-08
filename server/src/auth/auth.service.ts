@@ -187,6 +187,84 @@ export class AuthService {
     });
   }
 
+  // Handle user authenticated via better-auth (Google OAuth)
+  async handleBetterAuthUser(
+    betterAuthUserId: string,
+    email: string,
+    name?: string,
+    image?: string,
+  ): Promise<AuthResponse> {
+    // Find or create user in our system
+    let user = await this.prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (!user) {
+      // Create user if doesn't exist
+      user = await this.prisma.user.create({
+        data: {
+          email,
+          name: name || null,
+          image: image || null,
+          emailVerified: new Date(),
+          accounts: {
+            create: {
+              accountId: betterAuthUserId,
+              providerId: 'google',
+            },
+          },
+        },
+      });
+    } else {
+      // Update user info if needed
+      if (name || image) {
+        user = await this.prisma.user.update({
+          where: { id: user.id },
+          data: {
+            ...(name && !user.name && { name }),
+            ...(image && !user.image && { image }),
+          },
+        });
+      }
+
+      // Upsert Google account
+      const existingAccount = await this.prisma.account.findFirst({
+        where: { userId: user.id, providerId: 'google' },
+      });
+
+      if (!existingAccount) {
+        await this.prisma.account.create({
+          data: {
+            userId: user.id,
+            accountId: betterAuthUserId,
+            providerId: 'google',
+          },
+        });
+      }
+    }
+
+    const tokens = generateTokens(user.id, user.email);
+
+    // Store refresh token
+    await this.prisma.refreshToken.create({
+      data: {
+        token: tokens.refreshToken,
+        userId: user.id,
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      },
+    });
+
+    return {
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        image: user.image,
+      },
+      tokens,
+    };
+  }
+
   getGoogleAuthUrl(): string {
     const clientId = process.env.GOOGLE_CLIENT_ID;
     const redirectUri =

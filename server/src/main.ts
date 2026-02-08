@@ -10,9 +10,39 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from './common/filters/http-exception.filter';
+import { toNodeHandler } from 'better-auth/node';
+import { auth } from './auth/better-auth';
 
 async function bootstrap() {
+  console.log('Starting NestJS bootstrap...');
   const app = await NestFactory.create(AppModule);
+  console.log('NestJS app created');
+
+  // Get the underlying Express instance
+  const expressApp = app.getHttpAdapter().getInstance();
+
+  // Better-auth middleware - must be added to Express directly BEFORE NestJS middleware
+  const betterAuthHandler = toNodeHandler(auth);
+  expressApp.use((req: any, res: any, next: any) => {
+    const betterAuthPaths = [
+      '/api/auth/sign-in',
+      '/api/auth/callback',
+      '/api/auth/session',
+      '/api/auth/sign-out',
+    ];
+
+    // Check if the request path starts with any of the better-auth paths
+    const isBetterAuthRoute = betterAuthPaths.some((p) =>
+      req.url.startsWith(p),
+    );
+
+    if (isBetterAuthRoute) {
+      console.log('Better-auth handling:', req.method, req.url);
+      return betterAuthHandler(req, res);
+    }
+
+    next();
+  });
 
   // Enable cookie parsing
   app.use(cookieParser());
